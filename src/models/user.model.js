@@ -26,6 +26,9 @@ const userSchema = new Schema(
       lowercase: true,
       trime: true,
     },
+    language: {
+      type: String,
+    },
     avatar: {
       type: String, // cloudinary url
     },
@@ -41,6 +44,5 @@ const userSchema = new Schema(
   },
   { timestamps: true }
 );
-
 
 export const User = mongoose.model("User", userSchema);

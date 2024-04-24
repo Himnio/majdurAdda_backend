@@ -29,7 +29,9 @@ app.use(cookieParser());
 
 //Router imports
 import userRouter from './routes/user.routes.js'
+import majdurRouter from './routes/majdur.routes.js'
 
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/majdur", majdurRouter);
 
 export { app };
