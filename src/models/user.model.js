@@ -31,10 +31,10 @@ const userSchema = new Schema(
     language: {
       type: String,
     },
-    password: {
-      type: String,
-      required: [true, "password is required"],
-    },
+    // password: {
+    //   type: String,
+    //   required: [true, "password is required"],
+    // },
     avatar: {
       type: String, // cloudinary url
     },
@@ -51,11 +51,11 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-userSchema.pre("save", async function () {
-  if (!this.isModified("password")) return next();
-  this.password = bcrypt.hash(this.password, 10);
-  next();
-});
+// userSchema.pre("save", async function () {
+//   if (!this.isModified("password")) return next();
+//   this.password = bcrypt.hash(this.password, 10);
+//   next();
+// });
 
 userSchema.methods.isPasswordisValid = async function (password) {
   return await bcrypt.compare(password, this.password);
