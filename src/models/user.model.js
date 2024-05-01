@@ -2,6 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+
 const userSchema = new Schema(
   {
     firstName: {
@@ -31,10 +32,10 @@ const userSchema = new Schema(
     language: {
       type: String,
     },
-    // password: {
-    //   type: String,
-    //   required: [true, "password is required"],
-    // },
+    password: {
+      type: String,
+      required: [true, "password is required"],
+    },
     avatar: {
       type: String, // cloudinary url
     },
@@ -51,19 +52,20 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-// userSchema.pre("save", async function () {
-//   if (!this.isModified("password")) return next();
-//   this.password = bcrypt.hash(this.password, 10);
-//   next();
-// });
+userSchema.pre("save", async function(next) {
+  if (!this.isModified("password")) return next();
+  this.password = await bcrypt.hash(this.password, 10);
+  next();
+});
 
 userSchema.methods.isPasswordisValid = async function (password) {
-  return await bcrypt.compare(password, this.password);
+  console.log(password, this.password)
+  return await bcrypt.compare(password, this.password)
 };
 
 //jwt methods
-userSchema.methods.genrateAccessToken = function () {
-  return jwt.sign(
+userSchema.methods.generateAccessToken =  function() {
+  return  jwt.sign(
     {
       _id: this._id,
       fullName: this.fullName,
@@ -78,7 +80,7 @@ userSchema.methods.genrateAccessToken = function () {
   );
 };
 
-userSchema.methods.genrateRefreshToken = async function () {
+userSchema.methods.generateRefreshToken = async function () {
   return jwt.sign(
     {
       _id: this._id,
